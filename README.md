@@ -45,6 +45,7 @@ Star schema is be chosen to model the database to achieve song play analysis goa
 |duration       |NUMERIC        | not null             |
 
 **artists** - artist data
+
 |COLUMN  	    |TYPE  	        | NOTE   	    |
 |-------------- |---------------| --------------|
 |artist_id      |VARCHAR(100)   | Primary Key   |
