@@ -39,8 +39,8 @@ user_table_create =  ("CREATE TABLE IF NOT EXISTS " +
 song_table_create = ("CREATE TABLE IF NOT EXISTS " + 
                          TBL_SONGS + " ( " + 
                          "song_id VARCHAR(100) PRIMARY KEY," + 
-                         "title VARCHAR(200) NOT NULL," + 
-                         "artist_id VARCHAR(100) NOT NULL," + 
+                         "title VARCHAR(200) NULL," + 
+                         "artist_id VARCHAR(100) NULL," + 
                          "year SMALLINT," + 
                          "duration NUMERIC" + 
                         ")")
@@ -68,48 +68,39 @@ time_table_create = ("CREATE TABLE IF NOT EXISTS " +
 songplay_table_insert = ("INSERT INTO " + TBL_SONGPLAYS + 
                          "(start_time, user_id, level, song_id, artist_id, session_id, location, user_agent) " + 
                          "VALUES " + 
-                         "(%s, %s, %s, %s, %s, %s, %s, %s)")
+                         "(%s, %s, %s, %s, %s, %s, %s, %s) ")
 
 user_table_insert_1 = ("INSERT INTO " + TBL_USERS + 
-                         "(user_id,first_name, last_name, gender, level)" + 
-                         "VALUES " + 
-                         "(%s, %s, %s, %s, %s)")
-
-user_table_insert = ("INSERT INTO " + TBL_USERS + 
                          "(user_id,first_name, last_name, gender, level) " + 
                          "SELECT %s, %s, %s, %s, %s " + 
                          " WHERE NOT EXISTS (" + 
                          "      SELECT 1 FROM " + TBL_USERS + " WHERE user_id= %s " + 
                          ")")
 
+user_table_insert = ("INSERT INTO " + TBL_USERS + 
+                         "(user_id,first_name, last_name, gender, level)" + 
+                         "VALUES " + 
+                         "(%s, %s, %s, %s, %s) " + 
+                         "ON CONFLICT (user_id) DO NOTHING ")
+
 song_table_insert = ("INSERT INTO " + TBL_SONGS + 
                          "(song_id, title, artist_id, year, duration)" + 
                          "VALUES " + 
-                         "(%s, %s, %s, %s, %s)")
-
-artist_table_insert_1 = ("INSERT INTO " + TBL_ARTISTS + 
-                         "(artist_id,name, location, lattitude, longitude)" + 
-                         "VALUES " + 
-                         "(%s, %s, %s, %s, %s)")
+                         "(%s, %s, %s, %s, %s) " + 
+                         "ON CONFLICT (song_id) DO NOTHING ")
 
 artist_table_insert = ("INSERT INTO " + TBL_ARTISTS + 
-                         "(artist_id,name, location, lattitude, longitude) " + 
-                         "SELECT %s, %s, %s, %s, %s " + 
-                         " WHERE NOT EXISTS (" + 
-                         "      SELECT 1 FROM " + TBL_ARTISTS + " WHERE artist_id= %s " + 
-                         ")")
-
-time_table_insert_1 = ("INSERT INTO " + TBL_TIME + 
-                         "(start_time, hour, day, week, month, year, weekday)" + 
+                         "(artist_id,name, location, lattitude, longitude)" + 
                          "VALUES " + 
-                         "(%s, %s, %s, %s, %s, %s, %s)")
+                         "(%s, %s, %s, %s, %s) " + 
+                         "ON CONFLICT (artist_id) DO NOTHING ")                         
 
 time_table_insert = ("INSERT INTO " + TBL_TIME + 
-                         "(start_time, hour, day, week, month, year, weekday) " + 
-                         "SELECT %s, %s, %s, %s, %s, %s, %s " + 
-                         " WHERE NOT EXISTS (" + 
-                         "      SELECT 1 FROM " + TBL_TIME + " WHERE start_time = %s " + 
-                         ")")
+                         "(start_time, hour, day, week, month, year, weekday)" + 
+                         "VALUES " + 
+                         "(%s, %s, %s, %s, %s, %s, %s) " +  + 
+                         "ON CONFLICT (start_time) DO NOTHING ")
+
 # FIND SONGS
 
 song_select = ("SELECT * FROM " + TBL_SONGS + " WHERE title = %s AND artist_id = %s AND duration = %s")

@@ -6,7 +6,7 @@ A startup called Sparkify wants to analyze the data they've been collecting on s
 They'd like a data engineer to create a Postgres database with tables designed to optimize queries on song play analysis. The data engineer will create a database schema and ETL pipeline for this analysis. The database and ETL pipeline will be tested by running queries provided by the analytics team from Sparkify and compare the outcome with expected results.
 
 ## Database Design
-Star schema is be chosen to model the database to achieve song play analysis goal. The database is set up the following fact and dimension tables:
+Star schema is chosen to model the database to achieve song play analysis goal. The database is set up with the following fact and dimension tables:
 
 ### Fact Table
 **songplays** - user's song play activities
@@ -82,3 +82,28 @@ The text files are in JSON format and contain data about songs, users, song play
 ## Other Dev Files
 **etl.ipynb** - Jupyper notebook contains methods to test ETL processes
 **test.ipynb** - Jupyper notebook contains methods to check/validate data in the database
+
+## How To Run
+
+Th following must be installed and setup on local machine before running the scripts/files in this project:
+* PostgreSQL 
+* Python 2.7+
+* Python Packages - Jupyter Notebook, Pandas, Psycopg
+
+Run the following commands in terminal:
+1. Run the "create_tables.py" script to setup the database and related tables
+>python create_tables.py
+
+2. Run the "etl.py" script to extract data from text files, clean data, and insert the data into the database
+>python etl.py
+
+## Sample Queries
+The following queries can be perform once the database is populated:
+
+1. View song plays by female:
+>SELECT a.* FROM songplays AS a INNER JOIN users AS b ON a.user_id = b.user_id WHERE b.gender = 'F'
+
+2. Find how many users are Free and Paid:
+>SELECT level, count(level) FROM songplay GROUP BY level
+
+
